@@ -24,6 +24,25 @@ pipeline {
         		sh "docker push yuriao/devops:${BUILD_ID}"
         	}
         }
-
+        stage('Run QA deployment') {
+        	when {
+        		not {
+        			branch 'master'
+        		}
+      		}
+        	steps {
+        		build job: 'DeployRuby', parameters: [string(name: 'DEPLOY_TO', value: 'qa'),
+        						       string(name: 'BRANCH_NAME', value: 'qa')]
+        	}
+        }
+        stage('Run PROD deployment') {
+        	when {
+        		branch 'master'
+      		}
+        	steps {
+        		build job: 'DeployRuby', parameters: [string(name: 'DEPLOY_TO', value: 'prod'),
+		      							   string(name: 'BRANCH_NAME', value: 'master')]
+        	}
+        }
     }
 }
