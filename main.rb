@@ -6,6 +6,6 @@ set :port, 9095
 
 get '/' do
   { name: 'Hello',
-    description: 'World',
+    description: 'This is master branch',
     Url: request.url }.to_json
 end
